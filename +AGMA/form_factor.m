@@ -1,8 +1,8 @@
 function [Y_p, Y_g] = form_factor(N_p, N_g)
     % Lewis Form Factor 조회 함수 (20° Full-Depth Involute, Shigley's Table 14-2)
     % 선형 보간 이용
-    % 입력: N_p = 피니언 잇수, N_g = 기어 잇수
-    % 출력: Y_p = 피니언 Lewis Form Factor, Y_g = 기어 Lewis Form Factor
+    % 입력: N_p = 잇수 (단독 사용 가능), N_g = 기어 잇수 (생략 시 N_p 하나만 계산)
+    % 출력: Y_p = Lewis Form Factor, Y_g = 기어 Lewis Form Factor (nargin==2일 때만)
 
     % ── 1. 테이블 로드 ────────────────────────────────────────────────
     base_dir   = fileparts(mfilename('fullpath'));        % 이 .m 파일의 폴더 경로 (즉, AGMA 폴더 경로)
@@ -25,6 +25,12 @@ function [Y_p, Y_g] = form_factor(N_p, N_g)
 
     % ── 2. 보간 ───────────────────────────────────────────────────────
     Y_p = interp_Y(N_p, N_table, Y_table);
+
+    if nargin == 1
+        fprintf('잇수  N = %d  →  Y = %.4f\n', N_p, Y_p);
+        return
+    end
+
     Y_g = interp_Y(N_g, N_table, Y_table);
 
     % ── 3. 결과 출력 ──────────────────────────────────────────────────
