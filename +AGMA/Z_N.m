@@ -16,7 +16,7 @@ function Z_N = Z_N(N)
     elseif N >= 1e10
         Z_N = 0.853;
     end
-    fprintf('사이클 수 N = %d  →  수명계수 Z_N = %.4f\n', N, Z_N);
+    fprintf('Stress-Cycle Factor for Contact: Z_N = %.4f\n', Z_N);
 end
 
 

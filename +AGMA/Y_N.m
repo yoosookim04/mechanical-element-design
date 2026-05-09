@@ -16,7 +16,7 @@ function Y_N = Y_N(N)
     elseif N >= 1e10
         Y_N = 0.9;
     end
-    fprintf('사이클 수 N = %d  →  수명계수 Y_N = %.4f\n', N, Y_N);
+    fprintf('Stress-Cycle Factor for Bending: Y_N = %.4f\n', Y_N);
 end
 
 
