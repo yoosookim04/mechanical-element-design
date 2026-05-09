@@ -6,21 +6,21 @@ function [Y_p, Y_g] = form_factor(N_p, N_g)
 
     % ── 1. 테이블 로드 ────────────────────────────────────────────────
     base_dir   = fileparts(mfilename('fullpath'));        % 이 .m 파일의 폴더 경로 (즉, AGMA 폴더 경로)
-    % mfilename('fullpath') : 이 .
-    % m 파일의 전체 경로 (예: C:...\AGMA\form_factor.m). 'fullpath' 없으면 단순히 'form_factor' 반환
+    % mfilename('fullpath') : 현재 파일의 전체 경로 (예: C:...\AGMA\form_factor.m). 'fullpath' 없으면 단순히 'form_factor' 반환
     % [dir,name,ext] = fileparts(mfilename('fullpath')) : dir = 폴더 경로(+AGMA), name = 파일 이름(form_factor), ext = 확장자(.m)
     % base_dir = dir : AGMA 폴더 경로
 
     table_path = fullfile(base_dir, 'form_factor_table.xlsx');  % 엑셀 파일 전체 경로 조합 (AGMA 폴더에 있는 lewis_table.xlsx까지의 경로)
-    T          = readtable(table_path); % 엑셀 파일에서 테이블 읽기 (T는 테이블 형식으로 데이터 저장)
+    T = readtable(table_path); % 엑셀 파일에서 테이블 읽기 (T는 테이블 형식으로 데이터 저장)
     % 첫 행은 헤더로 자동인식 (NumberOfTeeth_N_, LewisFormFactor_Y_)
     N_table    = T.NumberOfTeeth_N_';
     Y_table    = T.LewisFormFactor_Y_';
 
-    valid   = isfinite(N_table) & isfinite(Y_table);
-    N_table = N_table(valid);
+    valid   = isfinite(N_table) & isfinite(Y_table); % 유효한 데이터 인덱스 (NaN이나 Inf가 아닌 값)
+    % isfinite : 각 요소가 유한한 숫자인지 확인하는 함수. NaN이나 Inf는 false 반환, 유효한 숫자는 true 반환.
+    % 결과적으로 유효한 데이터(숫자)가 있는 자리만 1로 표시된 논리 배열 생성.
+    N_table = N_table(valid); % valid 상 1인 인덱스에 해당하는 N_table 값만 추출하여 보간에 사용.
     Y_table = Y_table(valid);
-    % isfinite : 유효한 데이터만 보간에 사용하기 위해 NaN이나 Inf 제거.
     % 실제 data 마지막 행에 NaN이 있기에 유효한 데이터만 추출하여 보간에 사용.
 
     % ── 2. 보간 ───────────────────────────────────────────────────────
@@ -42,7 +42,7 @@ end
 
 % ── 로컬 함수: 단일 잇수에 대한 보간 ─────────────────────────────────
 function Y = interp_Y(N, N_table, Y_table)
-    if N < min(N_table) || N > max(N_table)
+    if N < min(N_table) || N > max(N_table) % ||: 논리 OR 연산자.
         error('잇수 N=%d 는 테이블 범위(%d ~ %d)를 벗어났습니다.', ...
               N, min(N_table), max(N_table))
     end
