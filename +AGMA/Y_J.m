@@ -1,8 +1,8 @@
-function [Y_j_p, Y_j_g] = Y_j(N_p, N_g)
+function [Y_J_p, Y_J_g] = Y_J(N_p, N_g)
     % Geometry Factor for Bending, Y_J (AGMA 908-B89, p.38)
-    % 20도 압력각 표준 스퍼기어 기준
+    % 20도 압력각 표준 스퍼기어 기준 (HPSTC 조건, whole depth factor : 2.25, tooth edge radius: 0.25))
     % 입력 N_p: 피니언 잇수, N_g: 기어 잇수 (생략 시 N_p 단독 계산)
-    % 출력 Y_j_p: 피니언 형상계수, Y_j_g: 기어 형상계수 (N_g 입력 시)
+    % 출력 Y_J_p: 피니언 형상계수, Y_J_g: 기어 형상계수 (N_g 입력 시)
 
     pinion_teeth_axis = [21, 26, 35, 55, 135];
     gear_teeth_axis   = [21, 26, 35, 55, 135];
@@ -30,9 +30,9 @@ function [Y_j_p, Y_j_g] = Y_j(N_p, N_g)
             error('잇수 N=%d 는 허용 범위(21 이상)를 벗어났습니다.', N_p)
         end
         [X, Y] = meshgrid(pinion_teeth_axis, gear_teeth_axis);
-        Y_j_p = interp2(X, Y, Jp_table, N_p, N_p, 'linear');
-        Y_j_g = [];
-        fprintf('Geometry Factor for Bending  Y_J = %.4f\n', Y_j_p);
+        Y_J_p = interp2(X, Y, Jp_table, N_p, N_p, 'linear');
+        Y_J_g = [];
+        fprintf('Geometry Factor for Bending  Y_J = %.4f\n', Y_J_p);
         return
     end
 
@@ -44,8 +44,8 @@ function [Y_j_p, Y_j_g] = Y_j(N_p, N_g)
     end
 
     [X, Y] = meshgrid(pinion_teeth_axis, gear_teeth_axis);
-    Y_j_p = interp2(X, Y, Jp_table, N_p, N_g, 'linear');
-    Y_j_g = interp2(X, Y, Jg_table, N_p, N_g, 'linear');
-    fprintf('Pinion: Geometry Factor for Bending  Y_J = %.4f\n', Y_j_p);
-    fprintf('Gear:   Geometry Factor for Bending  Y_J = %.4f\n', Y_j_g);
+    Y_J_p = interp2(X, Y, Jp_table, N_p, N_g, 'linear');
+    Y_J_g = interp2(X, Y, Jg_table, N_p, N_g, 'linear');
+    fprintf('Pinion: Geometry Factor for Bending  Y_J = %.4f\n', Y_J_p);
+    fprintf('Gear:   Geometry Factor for Bending  Y_J = %.4f\n', Y_J_g);
 end

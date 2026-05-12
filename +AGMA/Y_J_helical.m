@@ -1,9 +1,9 @@
-function [Y_j_p, Y_j_g] = Y_j_helical(beta, N_p, N_g)
+function [Y_J_p, Y_J_g] = Y_J_helical(beta, N_p, N_g)
     % Geometry Factor for Bending, Y_J — Helical Gear
     % Ref: Shigley's Mechanical Engineering Design, Fig. 14-7 & 14-8 (AGMA 908-B89)
-    % 20도 압력각 기준
+    % 20도 압력각 기준 (whole depth factor : 2.4, tooth edge radius: 0.35)
     % 입력 beta: 비틀림각 [deg], N_p: 피니언 잇수, N_g: 기어 잇수 (생략 시 피니언만 계산)
-    % 출력 Y_j_p: 피니언 형상계수, Y_j_g: 기어 형상계수 (N_g 입력 시)
+    % 출력 Y_J_p: 피니언 형상계수, Y_J_g: 기어 형상계수 (N_g 입력 시)
 
     psi_axis = [0, 5, 10, 15, 20, 25, 30, 35];
 
@@ -38,23 +38,23 @@ function [Y_j_p, Y_j_g] = Y_j_helical(beta, N_p, N_g)
     Jp_prime = interp2(Psi_top, N_top, Jprime_table, beta, N_p, 'linear');
 
     if nargin == 2
-        Y_j_g = [];
-        Y_j_p = Jp_prime;   % MF(mating=75) = 1.0
-        fprintf('Geometry Factor for Bending  Y_J = %.4f\n', Y_j_p);
+        Y_J_g = [];
+        Y_J_p = Jp_prime;   % MF(mating=75) = 1.0
+        fprintf('Geometry Factor for Bending  Y_J = %.4f\n', Y_J_p);
         return
     end
 
     validate(beta, N_g, N_axis_top, psi_axis);
 
     MF_p     = interp2(Psi_bot, N_bot, MF_table, beta, N_g, 'linear');
-    Y_j_p    = Jp_prime * MF_p;
+    Y_J_p    = Jp_prime * MF_p;
 
     Jg_prime = interp2(Psi_top, N_top, Jprime_table, beta, N_g, 'linear');
     MF_g     = interp2(Psi_bot, N_bot, MF_table,     beta, N_p, 'linear');
-    Y_j_g    = Jg_prime * MF_g;
+    Y_J_g    = Jg_prime * MF_g;
 
-    fprintf('Pinion: Geometry Factor for Bending  Y_J = %.4f\n', Y_j_p);
-    fprintf('Gear:   Geometry Factor for Bending  Y_J = %.4f\n', Y_j_g);
+    fprintf('Pinion: Geometry Factor for Bending  Y_J = %.4f\n', Y_J_p);
+    fprintf('Gear:   Geometry Factor for Bending  Y_J = %.4f\n', Y_J_g);
 end
 
 function validate(beta, N, N_axis, psi_axis)
