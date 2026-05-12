@@ -10,6 +10,6 @@ function [S_F_p, S_F_g] = S_F(N, W_t, v, m_n, alpha_n, beta, b, N_p, N_g)
     [sgm_p,sgm_g] = AGMA.sgm(W_t, v, m_n, alpha_n, beta, b, N_p, N_g);
     [sgm_all_p,sgm_all_g] = AGMA.sgm_all(N,u);
 
-    S_F_p = sgm_all_p / sgm_p
-    S_F_g = sgm_all_g / sgm_g
+    S_F_p = sgm_all_p / sgm_p;
+    S_F_g = sgm_all_g / sgm_g;
 end

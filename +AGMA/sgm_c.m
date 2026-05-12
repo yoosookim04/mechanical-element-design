@@ -8,7 +8,7 @@ function sgm_c = sgm_c(W_t, v, m_n, alpha_n, beta, b, N_p, N_g)
     K_o = 1.25;                           % 과부하계수
     K_v = AGMA.K_v(v);                    % 속도계수
     K_s_p = AGMA.K_s(m_n, beta, b, N_p);  % 크기계수
-    K_H_p = AGMA.K_H(m_n, beta, b, N_p);  % 하중부포집중계수
+    K_H = AGMA.K_H(m_n, beta, b, N_p);    % 하중분포계수 (기어쌍 단일값)
     
     d_p = m_t * N_p; % 피니언 피치원 지름
     
@@ -17,5 +17,5 @@ function sgm_c = sgm_c(W_t, v, m_n, alpha_n, beta, b, N_p, N_g)
     Z_R = 1;    % for normal commercial gear
     Z_I = AGMA.Z_I_helical(m_n,alpha_n, N_p, N_g, beta); % 형상계수
 
-    sgm_c = Z_E * sqrt(W_t * K_o * K_v * K_s_p * K_H_p * Z_R / (Z_I * b * d_p));
+    sgm_c = Z_E * sqrt(W_t * K_o * K_v * K_s_p * K_H * Z_R / (Z_I * b * d_p));
 end

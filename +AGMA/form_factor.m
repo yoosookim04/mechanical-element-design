@@ -17,15 +17,10 @@ function [Y_p, Y_g] = form_factor(N_p, N_g)
     Y_p = interp_Y(N_p, N_table, Y_table);
 
     if nargin == 1
-        fprintf('잇수  N = %d  →  Y = %.4f\n', N_p, Y_p);
         return
     end
 
     Y_g = interp_Y(N_g, N_table, Y_table);
-
-    % ── 3. 결과 출력 ──────────────────────────────────────────────────
-    fprintf('피니언  N_p = %d  →  Y_p = %.4f\n', N_p, Y_p);
-    fprintf('기어    N_g = %d  →  Y_g = %.4f\n', N_g, Y_g);
 end
 
 % ── 로컬 함수: 단일 잇수에 대한 보간 ─────────────────────────────────
