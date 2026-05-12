@@ -1,6 +1,7 @@
 function [Y_J_p, Y_J_g] = Y_J(N_p, N_g)
     % Geometry Factor for Bending, Y_J (AGMA 908-B89, p.38)
-    % 20도 압력각 표준 스퍼기어 기준 (HPSTC 조건, whole depth factor : 2.25, tooth edge radius: 0.25))
+    % 20도 압력각 표준 스퍼기어 기준 (whole depth factor : 2.25, tooth edge radius: 0.25)
+    % HPSTC 기준
     % 입력 N_p: 피니언 잇수, N_g: 기어 잇수 (생략 시 N_p 단독 계산)
     % 출력 Y_J_p: 피니언 형상계수, Y_J_g: 기어 형상계수 (N_g 입력 시)
 
