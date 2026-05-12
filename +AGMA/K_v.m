@@ -1,9 +1,8 @@
-function K_v = K_v(w, m_t)
+function K_v = K_v(v)
     % 속도계수 K_v
-    % 입력: w 각속도 [rad/s], m_t 모듈 (transverse section) [m]
+    % 입력: v pitch line velocity [m/s]
     % 출력: K_v 속도계수
     Q_v = 6;    % 정밀도 등급 6으로 고정
-    v   = w * m_t;  % pitch line velocity [m/s]
     B   = 0.25*(12-Q_v)^(2/3);
     A   = 50 + 56*(1-B);
     K_v = ((A+sqrt(200*v))/A)^B;

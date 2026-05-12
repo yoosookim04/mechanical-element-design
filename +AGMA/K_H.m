@@ -24,8 +24,10 @@ function K_H = calc_K_H(m_n, beta, b, N)
         C_pf = b / (10 * d) - 0.025;
     elseif b <= 425
         C_pf = b / (10 * d) - 0.0375 + 4.92e-4 * b;
-    else
+    elseif b <= 1000
         C_pf = b / (10 * d) - 0.1109 + 8.15e-4 * b - 3.53e-7 * b^2;
+    else
+        error('face width b=%.1f mm 가 허용 범위(0 ~ 1000 mm)를 벗어났습니다.', b)
     end
 
     C_e  = 1;    % 0.8 for gearing adjusted at assembly (그 외엔 다 1)
