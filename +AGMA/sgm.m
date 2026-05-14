@@ -8,7 +8,7 @@ function [sgm_p, sgm_g] = sgm(W_t, v, m_n, alpha_n, beta, b, N_p, N_g)
     [K_s_p, K_s_g] = AGMA.K_s(m_n, beta, b, N_p, N_g);  % 크기계수
     K_H = AGMA.K_H(m_n, beta, b, N_p);                    % 하중분포계수 (기어쌍 단일값)
     K_B = 1;                                            % 림두께계수
-    [Y_J_p, Y_J_g] = AGMA.Y_J_helical(beta, N_p, N_g);  % 형상계수
+    [Y_J_p, Y_J_g] = AGMA.Y_J(beta, N_p, N_g);  % 형상계수
 
 
 
