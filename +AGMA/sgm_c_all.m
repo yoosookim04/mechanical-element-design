@@ -14,6 +14,6 @@ function [sgm_c_all_p, sgm_c_all_g] = sgm_c_all(N, u)
     end
 
     [Z_N_p, Z_N_g] = AGMA.Z_N(N, u);
-    sgm_c_all_p = 1551 * Z_N_p;
+    sgm_c_all_p = 1551 * Z_N_p;    % S_c = 1551 MPa, Y_theta, Y_Z = 1
     sgm_c_all_g = 1551 * Z_N_g;
 end

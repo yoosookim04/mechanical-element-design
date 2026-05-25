@@ -1,6 +1,6 @@
 function Z_I = Z_I_helical(m_n,alpha_n, N_p, N_g, beta)
     % Geometry Factor for Contact, Z_I — Helical Gear (AGMA 908-B89)
-    % 20도 압력각 기준
+    % 20도 압력각, 비틀림각 beta인 헬리컬기어 기준
     % 입력 m_n 치직각(normal) 모듈, alpha_n: 치직각(normal) 압력각 [deg]
     % N_p: 피니언 잇수, N_g: 기어 잇수 (접촉 형상계수는 기어쌍 전체에 대한 계수)
     % 출력 Z_I: 접촉 형상계수

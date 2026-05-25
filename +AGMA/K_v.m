@@ -1,6 +1,6 @@
 function K_v = K_v(v)
     % 속도계수 K_v
-    % 입력: v pitch line velocity [m/s]
+    % 입력: v pitch line velocity [m/s] (v = ω*dp/2)
     % 출력: K_v 속도계수
     Q_v = 6;    % 정밀도 등급 6으로 고정
     B   = 0.25*(12-Q_v)^(2/3);
