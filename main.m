@@ -39,7 +39,7 @@ m_n_lst = [1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3];
 % v=ωdp​/2, Wt=2Tin/dpW_t = 2T_{in}/d_p
 % Wt​=2Tin​/dp​ — mm↔m 단위만 조심.) 이게 sgm/sgm_c가 요구하는 W_t, v 입력을 채워주는 다리야.
 
-% Design Variable: m, 
+% Design Variable: m_n, N_p, N_g, beta, b
 % Objective Function
 % Constraint
 
@@ -48,7 +48,7 @@ m_n_lst = [1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3];
 % 영향계수, 고정값
 K_o = 1.25; % 과부하계수
 K_B = 1; % 림두께계수 (rim thickness / gear tooth height >= 1.2)
-Z_E = 191;  % Eh
+Z_E = 191;  % sqrt(MPa) 탄성계수,포아송비 -> 탄성정수계수 (Eh, Carburized and hardened, grade 2)
 Z_R = 1;    % for normal commercial gear
 S_t = 448; % MPa Allowable Bending Stress Number,(Carburized and hardened, grade 2, 10^7 cycles, 신뢰도 0.99)
 S_c = 1551; % MPa Allowable Contact Stress Number (Carburized and hardened, grade 2, 10^7 cycles, 신뢰도 0.99)
