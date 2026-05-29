@@ -8,14 +8,15 @@ function [Y_N_p, Y_N_g] = Y_N(N, u)
 
     if nargin == 1
         Y_N_g = [];
-        fprintf('Stress-Cycle Factor for Bending  Y_N = %.4f\n', Y_N_p);
+        % fprintf('Stress-Cycle Factor for Bending  Y_N = %.4f\n', Y_N_p);
         return
     end
 
     N_g   = N / u;
     Y_N_g = calc_Y_N(N_g);
-    fprintf('Pinion: Stress-Cycle Factor for Bending  Y_N_p = %.4f\n', Y_N_p);
-    fprintf('Gear:   Stress-Cycle Factor for Bending  Y_N_g = %.4f\n', Y_N_g);
+
+    % fprintf('Pinion: Stress-Cycle Factor for Bending  Y_N_p = %.4f\n', Y_N_p);
+    % fprintf('Gear:   Stress-Cycle Factor for Bending  Y_N_g = %.4f\n', Y_N_g);
 end
 
 function Y = calc_Y_N(N)

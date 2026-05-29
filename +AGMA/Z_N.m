@@ -8,14 +8,15 @@ function [Z_N_p, Z_N_g] = Z_N(N, u)
 
     if nargin == 1
         Z_N_g = [];
-        fprintf('Stress-Cycle Factor for Contact  Z_N = %.4f\n', Z_N_p);
+        % fprintf('Stress-Cycle Factor for Contact  Z_N = %.4f\n', Z_N_p);
         return
     end
 
     N_g   = N / u;
     Z_N_g = calc_Z_N(N_g);
-    fprintf('Pinion: Stress-Cycle Factor for Contact  Z_N_p = %.4f\n', Z_N_p);
-    fprintf('Gear:   Stress-Cycle Factor for Contact  Z_N_g = %.4f\n', Z_N_g);
+    
+    % fprintf('Pinion: Stress-Cycle Factor for Contact  Z_N_p = %.4f\n', Z_N_p);
+    % fprintf('Gear:   Stress-Cycle Factor for Contact  Z_N_g = %.4f\n', Z_N_g);
 end
 
 function Z = calc_Z_N(N)
