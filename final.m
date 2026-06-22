@@ -23,11 +23,12 @@ N_cyc     = 1.8e9;     % [cycles] 피니언 요구 수명 (6000rpm * 60 * 5000h)
 
 
 beta_extent = [15, 16];   % [deg] helix angle 범위 (각 단에 공통 적용)
-db_extent   = [1.5,1.6]; % d/b (피치원지름/치폭) 범위 — 피니언 기준
+db_extent   = [1.3,1.5]; % d/b (피치원지름/치폭) 범위 — 피니언 기준
 %[1.25,3.3] d/b 범위는 AGMA 2001-D04,     b/d [0.3, 0.8]
 SF_F_min      = 1.4;      % bending  안전계수 하한 (제약)
 SF_H_min      = 1.1;      % contact  안전계수 하한 (제약)
 eps_alpha_min = 1.2;      % 횡 접촉비 하한 (제약)
+Wt_max        = 3000;     % [N] 전달하중(Wt) 상한 (제약) — Wr,Wa는 Wt에 비례하므로 간접적으로 반경/축방향 하중도 제한됨
 
 Np_max = 25;
 
@@ -83,6 +84,7 @@ for m_n1 = m_n_lst
                 u1     = Ng1 / Np1;  % 최종 기어비 (1단)
                 Sigma1 = Np1 + Ng1;  % 1단 잇수 합 (중심거리 a = m_n1*Sigma1/(2*cosd(beta1)))
                 if Np1 < gear.interference_free_p(alpha_n, beta_max, u1), continue; end % 1단 최종 기어비가 간섭회피하는지 확인
+                if Ng1 > gear.interference_free_g(alpha_n, beta_max, u1), continue; end 
 % ---------------- m_n1에 대해 간섭회피 조건 하에 1단 기어쌍 잇수 선정 완료 -----------------
 
                 for Np2 = Np2_min : Np_max
@@ -92,6 +94,7 @@ for m_n1 = m_n_lst
                         u2     = Ng2 / Np2;   % 최종 기어비 (2단)
                         Sigma2 = Np2 + Ng2;   % 2단 잇수 합 (중심거리 a = m_n2*Sigma2/(2*cosd(beta2)))
                         if Np2 < gear.interference_free_p(alpha_n, beta_max, u2), continue; end % 2단 최종 기어비가 간섭회피하는지 확인
+                        % if Ng2 > gear.interference_free_g(alpha_n, beta_max, u2), continue; end % 2단 최종 기어비가 간섭회피하는지 확인
 % ---------------- m_n2에 대해 간섭회피 조건 하에 2단 기어쌍 잇수 선정 완료 -----------------
 
                         % ── 피니언과 기어 잇수 서로소 제약 ──────────────────────────────────
@@ -113,7 +116,7 @@ for m_n1 = m_n_lst
                         objf = @(x) volume_obj(x, m_n1, m_n2, Np1, Ng1, Np2, Ng2, Sigma1, Sigma2);
                         conf = @(x) constr(x, m_n1, m_n2, Np1, Ng1, Np2, Ng2, Sigma1, Sigma2, ...
                                            alpha_n, n_in, T_in, N_cyc, ...
-                                           SF_F_min, SF_H_min, eps_alpha_min, beta_extent);
+                                           SF_F_min, SF_H_min, eps_alpha_min, Wt_max, beta_extent);
 
                         [xo, fo, flag] = fmincon(objf, x0, [],[],[],[], lb, ub, conf, opts);
                         % xo : 최적화된 설계 변수 (beta1, db_ratio1, db_ratio2)
@@ -205,12 +208,12 @@ end
 
 function [c, ceq] = constr(x, m_n1, m_n2, Np1, Ng1, Np2, Ng2, Sigma1, Sigma2, ...
                            alpha_n, n_in, T_in, N_cyc, ...
-                           SF_F_min, SF_H_min, eps_min, beta_extent)
+                           SF_F_min, SF_H_min, eps_min, Wt_max, beta_extent)
     ceq   = [];
     beta1 = x(1);
     cos2  = (m_n2*Sigma2) / (m_n1*Sigma1) * cosd(beta1);   % = cosd(beta2)
     if cos2 >= 1  % beta2 실수해 없음 -> 모든 제약에 큰 위반값 반환 (NaN/복소수 방지)
-        c = ones(14, 1) * 1e6;  return;
+        c = ones(16, 1) * 1e6;  return;
     end
     beta2 = acosd(cos2);
     s1 = eval_stage(m_n1, beta1, x(2), Np1, Ng1, alpha_n, n_in, T_in, N_cyc);
@@ -220,10 +223,12 @@ function [c, ceq] = constr(x, m_n1, m_n2, Np1, Ng1, Np2, Ng2, Sigma1, Sigma2, ..
           SF_H_min - s1.SHp;  SF_H_min - s1.SHg;   % 1단 접촉강도
           eps_min  - s1.eps;                         % 1단 접촉비 (contact ratio)
           s1.Nmin  - Np1;                            % 1단 언더컷 (beta1 종속)
+          s1.Wt    - Wt_max;                          % 1단 전달하중 상한
           SF_F_min - s2.SFp;  SF_F_min - s2.SFg;   % 2단 굽힘강도
           SF_H_min - s2.SHp;  SF_H_min - s2.SHg;   % 2단 접촉강도
           eps_min  - s2.eps;                         % 2단 접촉비 (contact ratio)
           s2.Nmin  - Np2;                            % 2단 언더컷 (beta2 종속)
+          s2.Wt    - Wt_max;                          % 2단 전달하중 상한
           beta2 - beta_extent(2);                    % beta2 상한 제약
           beta_extent(1) - beta2 ];                  % beta2 하한 제약
 end
